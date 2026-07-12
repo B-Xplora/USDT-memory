@@ -1,280 +1,243 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BlockVista • Blockchain Explorer</title>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono&display=swap');
-    :root { --brand: #2563eb; }
-    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #0f172a; }
-    .font-mono { font-family: 'Space Mono', monospace; }
-    :focus { outline: 3px solid rgba(37,99,235,0.3); outline-offset: 2px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#2563EB' }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'Space Mono', monospace; }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .animate-spin { animation: spin 1s linear infinite; }
+    </style>
 </head>
-<body class="min-h-screen">
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+    <div id="app">
+        <!-- Home Screen -->
+        <div id="home-screen">
+            <header class="bg-white/80 glass-blur border-b border-gray-200 py-4 px-6 sticky top-0 z-40">
+                <div class="max-w-7xl mx-auto flex justify-between items-center">
+                    <div class="flex items-center gap-2 font-bold text-xl">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                        </svg>
+                        <span class="text-gray-900">Blockchain<span class="text-primary">.com</span></span>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <button class="text-sm font-medium text-gray-600 hover:text-primary transition-colors hidden sm:block">Prices</button>
+                        <button class="text-sm font-medium text-gray-600 hover:text-primary transition-colors hidden sm:block">Charts</button>
+                        <button class="text-sm font-medium text-gray-600 hover:text-primary transition-colors hidden sm:block">Explorer</button>
+                        <button class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all">Sign In</button>
+                    </div>
+                </div>
+            </header>
 
-  <div id="app" class="min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <i data-lucide="box" class="text-[var(--brand)] w-7 h-7"></i>
-          <div>
-            <span class="font-bold text-xl">BlockVista</span>
-            <div class="text-xs text-gray-400">Multi-Chain Explorer</div>
-          </div>
+            <main>
+                <section class="relative py-24 md:py-32 overflow-hidden">
+                    <div class="container mx-auto px-4 relative z-10">
+                        <div class="max-w-4xl mx-auto text-center space-y-8">
+                            <span class="inline-block px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-sm tracking-wide">
+                                Multi-Chain Blockchain Explorer
+                            </span>
+                            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 leading-tight">
+                                Search the <span class="text-primary">Blockchain</span>
+                            </h1>
+                            <p class="text-xl text-gray-500 max-w-2xl mx-auto">
+                                Explore transactions, addresses, and blocks on Bitcoin, Ethereum, Tron and more.
+                            </p>
+
+                            <div class="max-w-2xl mx-auto w-full pt-4">
+                                <form onsubmit="handleSearch(event)" class="relative group">
+                                    <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                        </svg>
+                                    </div>
+                                    <input 
+                                        type="text" 
+                                        id="address-input" 
+                                        placeholder="Enter TRON address or transaction hash..."
+                                        class="w-full pl-14 pr-36 py-5 rounded-2xl border-2 border-gray-200 text-lg outline-none font-mono shadow-xl focus:border-primary transition-all"
+                                    >
+                                    <div class="absolute inset-y-2 right-2">
+                                        <button type="submit" class="h-full bg-primary hover:bg-blue-700 text-white px-8 rounded-xl font-semibold flex items-center gap-2">
+                                            Search
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
 
-        <div class="flex items-center gap-6 text-sm">
-          <div id="price-btc" class="flex items-center gap-1.5 font-mono"></div>
-          <div id="price-usdt" class="flex items-center gap-1.5 font-mono"></div>
-          
-          <nav class="flex items-center gap-5">
-            <a href="#" class="text-gray-600 hover:text-[var(--brand)] transition">Explorer</a>
-            <a href="#" class="text-gray-600 hover:text-[var(--brand)] transition">Markets</a>
-            <button class="bg-black text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-gray-800 transition">
-              Sign In
-            </button>
-          </nav>
-        </div>
-      </div>
-    </header>
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="hidden fixed inset-0 z-50 bg-white/95 flex flex-col items-center justify-center px-4">
+            <div class="w-full max-w-md space-y-8 text-center">
+                <div class="relative w-28 h-28 mx-auto">
+                    <div class="absolute inset-0 border-4 border-gray-100 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span id="progress-percent" class="text-xl font-bold font-mono text-primary">0%</span>
+                    </div>
+                </div>
 
-    <!-- Main -->
-    <main class="container mx-auto px-4 py-12 flex-1">
-      <section class="text-center max-w-3xl mx-auto">
-        <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">
-          LIVE • TRON • BTC • ETH
-        </span>
-        <h1 class="text-5xl font-extrabold mt-6 mb-3 tracking-tighter">
-          Search the <span class="text-[var(--brand)]">Blockchain</span>
-        </h1>
-        <p class="text-gray-600 text-lg">Real-time transactions, addresses, and mempool data.</p>
+                <div class="space-y-2">
+                    <h2 id="loading-text" class="text-2xl font-bold text-gray-900">Scanning Blockchain...</h2>
+                    <p class="text-gray-500">Connecting to nodes • Verifying data</p>
+                </div>
 
-        <form id="search-form" class="max-w-2xl mx-auto mt-10" novalidate>
-          <div class="relative bg-white rounded-3xl shadow border border-gray-200 p-2 flex items-center">
-            <div class="pl-5 text-gray-400">
-              <i data-lucide="search" class="w-5 h-5"></i>
+                <div class="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-primary rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
             </div>
-            <input
-              id="address-input"
-              class="flex-1 px-5 py-5 text-lg outline-none font-mono bg-transparent placeholder-gray-400"
-              type="search"
-              placeholder="Enter TRON address or transaction hash"
-              autocomplete="off"
-            />
-            <button type="submit" 
-                    class="bg-[var(--brand)] hover:bg-blue-700 text-white px-10 py-5 rounded-3xl transition font-medium">
-              Search
-            </button>
-          </div>
-          <p id="search-error" class="text-rose-600 text-sm mt-3 text-center hidden"></p>
-        </form>
-      </section>
-
-      <!-- Loading -->
-      <section id="loading-section" class="hidden fixed inset-0 bg-white/95 backdrop-blur z-50 flex items-center justify-center">
-        <div class="text-center max-w-md">
-          <div class="w-20 h-20 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mx-auto mb-8"></div>
-          <h3 id="loading-text" class="text-2xl font-semibold mb-2">Scanning Blockchain...</h3>
-          <p id="loading-subtext" class="text-gray-500">Connecting to TRON nodes • Verifying transaction</p>
-          
-          <div class="mt-10 w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-            <div id="progress-bar" class="h-full bg-blue-600 w-0 transition-all duration-300"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Results -->
-      <section id="results-section" class="hidden mt-16 max-w-4xl mx-auto">
-        <button id="back-btn" class="flex items-center gap-2 text-gray-500 hover:text-blue-600 mb-8 transition">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Search
-        </button>
-
-        <!-- Success Result -->
-        <div id="result-found" class="hidden bg-white rounded-3xl shadow border border-gray-100 overflow-hidden">
-          <!-- Populated by JS -->
         </div>
 
-        <!-- No Result -->
-        <div id="result-none" class="hidden bg-white rounded-3xl shadow border border-gray-100 p-12 text-center">
-          <i data-lucide="search-x" class="w-20 h-20 text-gray-300 mx-auto mb-6"></i>
-          <h3 class="text-2xl font-semibold mb-3">No outgoing transaction found</h3>
-          <p class="text-gray-600 max-w-md mx-auto">
-            We couldn’t find any outgoing transaction on this address.<br>
-            Please check another transaction hash or try a different address.
-          </p>
+        <!-- Results Screen -->
+        <div id="results-screen" class="hidden min-h-screen bg-gray-50">
+            <header class="bg-white/80 border-b border-gray-200 py-4 px-6 sticky top-0 z-40">
+                <div class="max-w-7xl mx-auto flex justify-between items-center">
+                    <div class="flex items-center gap-2 font-bold text-xl">
+                        <span class="text-gray-900">Blockchain<span class="text-primary">.com</span></span>
+                    </div>
+                </div>
+            </header>
+            
+            <main class="container mx-auto px-4 py-8 max-w-4xl">
+                <button onclick="goHome()" class="flex items-center text-sm text-gray-500 hover:text-primary mb-8 font-medium">
+                    ← Back to Search
+                </button>
+
+                <!-- Transaction Found -->
+                <div id="transaction-found" class="hidden space-y-8">
+                    <div class="bg-white rounded-3xl border border-gray-100 p-8 shadow">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-full text-xs font-bold">CONFIRMED • TRON (TRC20)</span>
+                                <h2 class="text-3xl font-bold mt-6">$34,000 USDT</h2>
+                                <p class="text-emerald-600 font-medium">Incoming Transfer</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500">Just now</p>
+                            </div>
+                        </div>
+
+                        <div class="my-10 p-6 bg-gray-50 rounded-2xl font-mono text-sm break-all">
+                            <p class="text-gray-500 mb-1">To Address</p>
+                            <p id="result-address" class="font-medium"></p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6 text-sm">
+                            <div>
+                                <p class="text-gray-500">From</p>
+                                <p class="font-medium">TETHER TREASURY</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Transaction Hash</p>
+                                <p class="font-mono text-xs break-all">0x8f3a9c2e7b1d4f5a6e7f8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Confirmations</p>
+                                <p class="font-semibold text-emerald-600">124 confirmations</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Network Fee</p>
+                                <p class="font-medium">1.2 TRX</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Outgoing Transaction -->
+                <div id="no-transaction" class="hidden py-16 text-center">
+                    <div class="w-20 h-20 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.595 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.595-1.858L5 7m5 4v6m4-6v6m1-10V9a1 1 0 00-1-1h-4a1 1 0 00-1 1v1M12 4v6m2-6v6"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-3">No outgoing transaction found</h2>
+                    <p class="text-gray-600 max-w-md mx-auto">
+                        We couldn’t find any outgoing transaction on this address.<br>
+                        Please check another transaction hash or try a different address.
+                    </p>
+                    <button onclick="goHome()" class="mt-10 bg-primary text-white px-8 py-3.5 rounded-2xl font-semibold">
+                        Try Another Search
+                    </button>
+                </div>
+            </main>
         </div>
-      </section>
-    </main>
-  </div>
+    </div>
 
-  <script>
-    lucide.createIcons();
+    <script>
+        const SPECIAL_ADDRESS = "TZDfVdt6pJrAvgzUNXR7VtnGGFwq4Gysnw";
+        let searchedAddress = "";
 
-    const SPECIAL_ADDRESS = "TZDfVdt6pJrAvgzUNXR7VtnGGFwq4Gysnw";
-    const searchForm = document.getElementById('search-form');
-    const input = document.getElementById('address-input');
-    const loadingSection = document.getElementById('loading-section');
-    const loadingText = document.getElementById('loading-text');
-    const loadingSubtext = document.getElementById('loading-subtext');
-    const progressBar = document.getElementById('progress-bar');
-    const resultsSection = document.getElementById('results-section');
-    const resultFound = document.getElementById('result-found');
-    const resultNone = document.getElementById('result-none');
-    const searchError = document.getElementById('search-error');
+        function handleSearch(event) {
+            event.preventDefault();
+            const address = document.getElementById('address-input').value.trim();
+            if (!address) return;
 
-    // Live Prices
-    async function fetchPrices() {
-      try {
-        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd');
-        const data = await res.json();
-        document.getElementById('price-btc').innerHTML = `<span class="text-orange-600">BTC</span> <span class="font-semibold">$${data.bitcoin.usd.toLocaleString()}</span>`;
-        document.getElementById('price-usdt').innerHTML = `<span class="text-blue-600">USDT</span> <span class="font-semibold">$${data.tether.usd}</span>`;
-      } catch (e) { console.warn("Price update failed"); }
-    }
-    fetchPrices();
-    setInterval(fetchPrices, 30000);
+            searchedAddress = address;
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
 
-    // Show loading with 19-second duration for special address
-    function showLoading(isSpecial) {
-      loadingSection.classList.remove('hidden');
-      progressBar.style.width = '0%';
+            const isSpecial = address === SPECIAL_ADDRESS;
+            const duration = isSpecial ? 19000 : 6500;   // 19 seconds for special address
 
-      const duration = isSpecial ? 19000 : 4500;
-      const startTime = Date.now();
+            let progress = 0;
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercent = document.getElementById('progress-percent');
 
-      const animateProgress = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(100, (elapsed / duration) * 100);
-        progressBar.style.width = `${progress}%`;
-        if (elapsed < duration) requestAnimationFrame(animateProgress);
-      };
-      animateProgress();
+            const timer = setInterval(() => {
+                progress += 2;
+                if (progress >= 100) progress = 100;
+                progressBar.style.width = progress + '%';
+                progressPercent.textContent = Math.round(progress) + '%';
+                if (progress >= 100) clearInterval(timer);
+            }, duration / 50);
 
-      return new Promise(resolve => setTimeout(resolve, duration));
-    }
+            setTimeout(() => {
+                showResults(address);
+            }, duration);
+        }
 
-    // Mock lookup
-    async function lookupQuery(query) {
-      const q = query.trim();
-      if (q === SPECIAL_ADDRESS) {
-        return {
-          found: true,
-          identifier: SPECIAL_ADDRESS,
-          amount: "34,000",
-          symbol: "USDT",
-          from: "TETHER TREASURY",
-          txHash: "0x" + Array(64).fill(0).map(() => Math.floor(Math.random()*16).toString(16)).join(''),
-          timestamp: "Just now",
-          confirmations: "12",
-          network: "TRON (TRC20)"
+        function showResults(address) {
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+            document.getElementById('result-address').textContent = address;
+
+            if (address === SPECIAL_ADDRESS) {
+                document.getElementById('transaction-found').classList.remove('hidden');
+                document.getElementById('no-transaction').classList.add('hidden');
+            } else {
+                document.getElementById('transaction-found').classList.add('hidden');
+                document.getElementById('no-transaction').classList.remove('hidden');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+            document.getElementById('address-input').value = '';
+        }
+
+        // Pre-fill for demo
+        window.onload = () => {
+            document.getElementById('address-input').value = SPECIAL_ADDRESS;
         };
-      }
-      return { found: false };
-    }
-
-    function showError(msg) {
-      searchError.textContent = msg;
-      searchError.classList.remove('hidden');
-      setTimeout(() => searchError.classList.add('hidden'), 6000);
-    }
-
-    function displaySuccess(result) {
-      resultFound.innerHTML = `
-        <div class="p-8 bg-gradient-to-br from-emerald-50 to-white border-b">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <div class="bg-emerald-100 text-emerald-600 p-4 rounded-2xl">
-                <i data-lucide="arrow-down-circle" class="w-10 h-10"></i>
-              </div>
-              <div>
-                <p class="text-emerald-600 font-semibold">Incoming Transaction</p>
-                <p class="font-mono text-xl break-all">${result.identifier}</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <div class="text-4xl font-bold text-emerald-600">+$${result.amount}</div>
-              <div class="text-emerald-600 font-medium">${result.symbol}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-8 space-y-8">
-          <div class="grid grid-cols-2 gap-6">
-            <div class="bg-gray-50 rounded-2xl p-6">
-              <p class="text-gray-500 text-sm">From</p>
-              <p class="font-medium mt-1">${result.from}</p>
-            </div>
-            <div class="bg-gray-50 rounded-2xl p-6">
-              <p class="text-gray-500 text-sm">Network</p>
-              <p class="font-medium mt-1">${result.network}</p>
-            </div>
-          </div>
-
-          <div class="bg-gray-50 rounded-2xl p-6">
-            <div class="flex justify-between py-3 border-b">
-              <span class="text-gray-500">Transaction Hash</span>
-              <span class="font-mono text-sm break-all">${result.txHash}</span>
-            </div>
-            <div class="flex justify-between py-3 border-b">
-              <span class="text-gray-500">Timestamp</span>
-              <span>${result.timestamp}</span>
-            </div>
-            <div class="flex justify-between py-3">
-              <span class="text-gray-500">Confirmations</span>
-              <span class="font-semibold text-emerald-600">${result.confirmations} blocks</span>
-            </div>
-          </div>
-        </div>
-      `;
-      lucide.createIcons();
-      resultFound.classList.remove('hidden');
-    }
-
-    // Form Submit
-    searchForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const query = input.value.trim();
-
-      if (!query) {
-        showError("Please enter an address or transaction hash.");
-        return;
-      }
-
-      resultsSection.classList.add('hidden');
-      resultFound.classList.add('hidden');
-      resultNone.classList.add('hidden');
-
-      const isSpecial = query === SPECIAL_ADDRESS;
-      await showLoading(isSpecial);
-
-      const result = await lookupQuery(query);
-
-      resultsSection.classList.remove('hidden');
-
-      if (result.found) {
-        displaySuccess(result);
-      } else {
-        resultNone.classList.remove('hidden');
-      }
-    });
-
-    // Back button
-    document.getElementById('back-btn').addEventListener('click', () => {
-      resultsSection.classList.add('hidden');
-      input.focus();
-    });
-
-    // Demo preload
-    window.addEventListener('load', () => {
-      input.value = SPECIAL_ADDRESS;
-    });
-  </script>
+    </script>
 </body>
 </html>
