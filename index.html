@@ -147,7 +147,7 @@
                             </div>
                             <div>
                                 <p class="text-gray-500">Transaction Hash</p>
-                                <p class="font-mono text-xs break-all">0x8f3a9c2e7b1d4f5a6e7f8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e</p>
+                                <p class="font-mono text-xs break-all">0x8f3a9c2e7b1d4f-0-e8f9a0b1c2d3e4f5a6b7c8d9e</p>
                             </div>
                             <div>
                                 <p class="text-gray-500">Confirmations</p>
@@ -183,19 +183,17 @@
 
     <script>
         const SPECIAL_ADDRESS = "TZDfVdt6pJrAvgzUNXR7VtnGGFwq4Gysnw";
-        let searchedAddress = "";
 
         function handleSearch(event) {
             event.preventDefault();
             const address = document.getElementById('address-input').value.trim();
             if (!address) return;
 
-            searchedAddress = address;
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('loading-screen').classList.remove('hidden');
 
             const isSpecial = address === SPECIAL_ADDRESS;
-            const duration = isSpecial ? 19000 : 6500;   // 19 seconds for special address
+            const duration = isSpecial ? 19000 : 6500;
 
             let progress = 0;
             const progressBar = document.getElementById('progress-bar');
@@ -231,13 +229,8 @@
         function goHome() {
             document.getElementById('results-screen').classList.add('hidden');
             document.getElementById('home-screen').classList.remove('hidden');
-            document.getElementById('address-input').value = '';
+            document.getElementById('address-input').value = '';   // Clear input
         }
-
-        // Pre-fill for demo
-        window.onload = () => {
-            document.getElementById('address-input').value = SPECIAL_ADDRESS;
-        };
     </script>
 </body>
 </html>
