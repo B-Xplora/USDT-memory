@@ -1,312 +1,428 @@
 <!DOCTYPE html>
-<html lang="en-AU">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bybit • Transaction Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Roboto+Mono:wght@400;500&display=swap');
-        
-        :root {
-            --primary: #0F172A;
-            --accent: #FF9500;
-            --success: #00FFAA;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0F172A 0%, #1E2937 100%);
-            color: #E2E8F0;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        header {
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 149, 0, 0.3);
-            padding: 1rem 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        .logo {
-            font-size: 1.65rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #FF9500;
-        }
-        
-        .main-container {
-            padding-top: 90px;
-            padding-bottom: 40px;
-            max-width: 480px;
-            margin: 0 auto;
-            padding-left: 5%;
-            padding-right: 5%;
-        }
-        
-        .account-card {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255, 149, 0, 0.3);
-            border-radius: 24px;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .balance {
-            font-size: 2.6rem;
-            font-weight: 700;
-            font-family: 'Roboto Mono', monospace;
-            color: #00FFAA;
-            margin: 8px 0;
-        }
-        
-        .withdrawal-section {
-            text-align: center;
-            margin: 50px 0;
-        }
-        
-        .withdrawal-circle {
-            width: 260px;
-            height: 260px;
-            margin: 0 auto;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #FF9500, #FF5E00);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 0 80px rgba(255, 149, 0, 0.7),
-                        inset 0 15px 40px rgba(255,255,255,0.4);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        .withdrawal-circle:active {
-            transform: scale(0.92);
-        }
-        
-        .circle-content h2 {
-            font-size: 1.35rem;
-            color: #0F172A;
-            font-weight: 700;
-        }
-        
-        .wallet-box {
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 12px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.95rem;
-            word-break: break-all;
-            margin: 8px 0;
-            position: relative;
-        }
-        
-        .copy-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: #FF9500;
-            color: #0F172A;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
-        
-        /* Modals */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.97);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-        }
-        
-        .modal-content {
-            background: #1E2937;
-            border: 2px solid var(--accent);
-            border-radius: 28px;
-            width: 92%;
-            max-width: 460px;
-            padding: 2.2rem;
-            box-shadow: 0 25px 70px rgba(0,0,0,0.6);
-        }
-        
-        .modal-title {
-            color: var(--success);
-            font-size: 1.7rem;
-            text-align: center;
-            margin-bottom: 1.2rem;
-        }
-        
-        .btn {
-            padding: 15px 32px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-        }
-        
-        .btn-confirm {
-            background: var(--success);
-            color: #0F172A;
-            border: none;
-        }
-        
-        .spinner {
-            width: 78px;
-            height: 78px;
-            border: 6px solid rgba(255, 149, 0, 0.2);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1.1s linear infinite;
-        }
-        
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Verified Transaction Channel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00D632;
+    --green-dark: #00B82A;
+    --green-light: #E8F9ED;
+    --white: #FFFFFF;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-500: #64748B;
+    --gray-700: #334155;
+    --gray-900: #0F172A;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --radius: 20px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #F1F5F9;
+    color: var(--gray-900);
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 28px 24px 32px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .card-sub {
+    font-size: 14px;
+    color: var(--gray-500);
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .recipient-box {
+    background: var(--gray-50);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .recipient-avatar {
+    width: 64px;
+    height: 64px;
+    background: var(--green-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green-dark);
+  }
+
+  .recipient-name {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .recipient-tag {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-top: 4px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 0;
+    font-size: 15px;
+  }
+
+  .row.total {
+    border-top: 1px solid var(--gray-200);
+    margin-top: 8px;
+    padding-top: 18px;
+    font-weight: 700;
+    font-size: 17px;
+  }
+
+  .label {
+    color: var(--gray-500);
+  }
+
+  .sim-notice {
+    background: #FEF3C7;
+    color: #92400E;
+    font-size: 13px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin: 22px 0;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--green-dark);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-secondary {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    margin-top: 12px;
+  }
+
+  .btn-secondary:hover {
+    background: var(--gray-200);
+  }
+
+  /* Views */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* Loading */
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--gray-200);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    margin: 10px auto 24px;
+    animation: spin 0.85s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .status {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .detail {
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .sync-box {
+    background: var(--green-light);
+    border-radius: 14px;
+    padding: 16px;
+    margin: 20px 0 28px;
+    text-align: left;
+  }
+
+  .sync-box strong {
+    display: block;
+    font-size: 15px;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+  }
+
+  .sync-box span {
+    font-size: 13px;
+    color: var(--gray-700);
+    line-height: 1.4;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background: var(--gray-200);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--green);
+    border-radius: 6px;
+    transition: width 0.45s ease;
+  }
+
+  /* Verified Channel */
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-light);
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .fee-box {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 14px;
+    padding: 18px;
+    margin: 24px 0;
+    text-align: center;
+  }
+
+  .fee-box .fee-label {
+    font-size: 13px;
+    color: #B91C1C;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .fee-box .fee-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: #B91C1C;
+  }
+
+  .fee-box .fee-note {
+    font-size: 13px;
+    color: #7F1D1D;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+</style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <i class="fas fa-bolt"></i>
-            <span>BYBIT</span>
-        </div>
-        <div style="font-size:0.9rem; color:#94A3B8;">Transaction Portal</div>
-    </header>
 
-    <div class="main-container">
-        <div class="account-card">
-            <p style="opacity:0.8; font-size:1.05rem;">ETH Wallet • Spot</p>
-            <div class="balance">$200,000</div>
-            <p style="color:#00FFAA; font-weight:500;">107 ETH • Available</p>
-        </div>
+<div class="container">
+  <div class="card">
 
-        <div class="withdrawal-section">
-            <div onclick="showConfirmation()" id="withdraw-btn" class="withdrawal-circle">
-                <div class="circle-content">
-                    <h2>RELEASE WITHDRAWAL</h2>
-                    <p style="color:#0F172A; margin-top:8px;">$200,000 (107 ETH)</p>
-                </div>
-            </div>
-        </div>
+    <!-- ========== 1. TRANSACTION PREVIEW ========== -->
+    <div class="view active" id="previewView">
+      <h1 class="card-title">Pending Transaction</h1>
+      <p class="card-sub">Review and confirm the details below</p>
+
+      <div class="recipient-box">
+        <div class="recipient-avatar">JF</div>
+        <div class="recipient-name">$JohnFernandes95</div>
+        <div class="recipient-tag">Cash App Handle</div>
+      </div>
+
+      <div class="row">
+        <span class="label">Amount</span>
+        <span>$4,870.00</span>
+      </div>
+      <div class="row">
+        <span class="label">Service fee</span>
+        <span>$121.00</span>
+      </div>
+      <div class="row">
+        <span class="label">Synchronization</span>
+        <span>$79.00</span>
+      </div>
+      <div class="row total">
+        <span>Total</span>
+        <span>$5,070.00</span>
+      </div>
+
+      <div class="sim-notice">
+        This is a simulation and does not process real funds.
+      </div>
+
+      <button class="btn btn-primary" onclick="startLoading()">Confirm Payment</button>
+      <button class="btn btn-secondary" onclick="alert('Transaction cancelled (simulation)')">Cancel</button>
     </div>
 
-    <!-- Confirmation Modal -->
-    <div id="confirm-modal" class="modal">
-        <div class="modal-content">
-            <h2 class="modal-title">Confirm Receiving Wallet</h2>
-            
-            <p style="text-align:center; margin:15px 0; color:#94A3B8;">Destination Wallet</p>
-            <div class="wallet-box">
-                0xF3c30d013264fe212Eeb1A4a87E6f7D850afC3ef
-                <button class="copy-btn" onclick="copyWallet(this, '0xF3c30d013264fe212Eeb1A4a87E6f7D850afC3ef')">Copy</button>
-            </div>
-            
-            <button onclick="startWithdrawal()" class="btn btn-confirm">CONFIRM WALLET &amp; CONTINUE</button>
-            <button onclick="closeModal('confirm-modal')" class="btn" style="background:#334155; color:white;">CANCEL</button>
-        </div>
+    <!-- ========== 2. LOADING / PROCESSING ========== -->
+    <div class="view" id="loadingView">
+      <div class="spinner"></div>
+      <div class="status" id="statusText">Initiating secure transfer…</div>
+      <div class="detail" id="detailText">
+        Preparing transaction to Cash App handle<br>
+        <strong>$JohnFernandes95</strong>
+      </div>
+
+      <div class="sync-box">
+        <strong>Synchronization Fee: $79.00</strong>
+        <span>Required for immediate release of funds to the recipient’s Cash App account.</span>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
     </div>
 
-    <!-- Loading -->
-    <div id="loading-overlay" class="modal">
-        <div style="text-align:center;">
-            <div class="spinner"></div>
-            <h3 style="margin:25px 0 10px; color:#CBD5E1;">Processing Transaction...</h3>
-            <p id="timer" style="font-family:'Roboto Mono',monospace; color:var(--accent);">17 seconds remaining</p>
-            <div style="width:260px; background:rgba(255,255,255,0.1); border-radius:10px; margin:25px auto; overflow:hidden;">
-                <div id="progress-bar" style="height:5px; background:linear-gradient(to right, #FF9500, #FF5E00); width:0%; transition:width 0.4s linear;"></div>
-            </div>
+    <!-- ========== 3. VERIFIED TRANSACTION CHANNEL ========== -->
+    <div class="view" id="verifiedView">
+      <div style="text-align:center;">
+        <div class="verified-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+          Verified Transaction Channel
         </div>
+      </div>
+
+      <h1 class="card-title">Channel Established</h1>
+      <p class="card-sub">Secure connection to Cash App handle is now active</p>
+
+      <div class="recipient-box">
+        <div class="recipient-avatar">JF</div>
+        <div class="recipient-name">$JohnFernandes95</div>
+        <div class="recipient-tag">Verified Cash App Handle</div>
+      </div>
+
+      <div class="fee-box">
+        <div class="fee-label">Transfer Consultation Fee Required</div>
+        <div class="fee-amount">$209 USD</div>
+        <div class="fee-note">
+          This one-time consultation fee is required to finalize and release the pending transfer through the verified channel.
+        </div>
+      </div>
+
+      <div class="sim-notice">
+        This is a simulation and does not process real funds.
+      </div>
+
+      <button class="btn btn-primary" onclick="alert('Consultation fee payment simulated – no real funds processed')">
+        Pay Consultation Fee – $209
+      </button>
+      <button class="btn btn-secondary" onclick="alert('Transaction cancelled (simulation)')">
+        Cancel
+      </button>
     </div>
 
-    <!-- Certificate -->
-    <div id="success-modal" class="modal">
-        <div class="modal-content">
-            <h2 class="modal-title">✓ Withdrawal Release Certificate</h2>
-            
-            <div style="background:rgba(0,255,170,0.08); padding:20px; border-radius:16px; margin:20px 0; text-align:left; line-height:1.75; font-size:1.02rem;">
-                Due to low bandwidth on the transaction ledger, a server fee of $25 is required to permanently register and process this payment to the confirmed wallet.<br><br>
-                
-                The entire process takes 4-6 minutes only.<br><br>
-                
-                Please send the server fee of <strong>$25</strong> to the following wallet:<br><br>
-                <strong>Fee Wallet:</strong><br>
-                <span style="font-family:'Roboto Mono'; font-size:0.95rem;">0xD4886FE35608171D02E51D3535ff9D77d8673cac</span>
-                <button onclick="copyFeeWallet()" style="margin-top:8px; padding:6px 14px; background:#FF9500; color:#0F172A; border:none; border-radius:6px; font-size:0.85rem;">Copy Address</button>
-            </div>
-            
-            <button onclick="closeModal('success-modal')" class="btn btn-confirm">CLOSE CERTIFICATE</button>
-        </div>
-    </div>
+  </div>
+</div>
 
-    <script>
-        function showConfirmation() {
-            document.getElementById('confirm-modal').style.display = 'flex';
-        }
-        
-        function startWithdrawal() {
-            closeModal('confirm-modal');
-            document.getElementById('loading-overlay').style.display = 'flex';
-            
-            let timeLeft = 17;
-            let progress = 0;
-            const timerEl = document.getElementById('timer');
-            const progressBar = document.getElementById('progress-bar');
-            
-            const interval = setInterval(() => {
-                timeLeft--;
-                progress = ((17 - timeLeft) / 17) * 100;
-                timerEl.textContent = `${timeLeft} seconds remaining`;
-                progressBar.style.width = `${progress}%`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(interval);
-                    document.getElementById('loading-overlay').style.display = 'none';
-                    document.getElementById('success-modal').style.display = 'flex';
-                }
-            }, 1000);
-        }
-        
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-        
-        function copyWallet(btn, address) {
-            navigator.clipboard.writeText(address).then(() => {
-                btn.textContent = "Copied!";
-                setTimeout(() => btn.textContent = "Copy", 2000);
-            });
-        }
-        
-        function copyFeeWallet() {
-            const address = "0xD4886FE35608171D02E51D3535ff9D77d8673cac";
-            navigator.clipboard.writeText(address).then(() => {
-                alert("Fee wallet address copied!");
-            });
-        }
-        
-        document.addEventListener('keydown', e => {
-            if (e.key === "Escape") {
-                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-            }
-        });
-    </script>
+<script>
+  function showView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function startLoading() {
+    showView('loadingView');
+
+    const status = document.getElementById('statusText');
+    const detail = document.getElementById('detailText');
+    const progress = document.getElementById('progressFill');
+
+    const steps = [
+      { pct: 15, status: "Initiating secure transfer…", detail: "Connecting to payment network" },
+      { pct: 35, status: "Verifying recipient…", detail: "Confirming Cash App handle<br><strong>$JohnFernandes95</strong>" },
+      { pct: 55, status: "Applying synchronization…", detail: "Processing $79.00 synchronization fee for immediate release" },
+      { pct: 75, status: "Establishing secure channel…", detail: "Creating verified transaction channel" },
+      { pct: 90, status: "Finalizing connection…", detail: "Almost complete" },
+      { pct: 100, status: "Channel verified", detail: "Secure connection established" }
+    ];
+
+    let i = 0;
+
+    function nextStep() {
+      if (i >= steps.length) {
+        setTimeout(() => {
+          showView('verifiedView');
+        }, 800);
+        return;
+      }
+
+      const step = steps[i];
+      status.textContent = step.status;
+      detail.innerHTML = step.detail;
+      progress.style.width = step.pct + '%';
+      i++;
+      setTimeout(nextStep, 1100 + Math.random() * 350);
+    }
+
+    setTimeout(nextStep, 500);
+  }
+</script>
 </body>
 </html>
