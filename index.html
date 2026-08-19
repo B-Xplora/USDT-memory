@@ -3,21 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Verified Transaction Channel</title>
+<title>Cash XPP</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --green: #00D632;
     --green-dark: #00B82A;
     --green-light: #E8F9ED;
-    --white: #FFFFFF;
     --gray-50: #F8FAFC;
     --gray-100: #F1F5F9;
     --gray-200: #E2E8F0;
     --gray-500: #64748B;
     --gray-700: #334155;
     --gray-900: #0F172A;
-    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow: 0 8px 30px rgba(0,0,0,0.08);
     --radius: 20px;
   }
 
@@ -29,7 +28,7 @@
   }
 
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     background: #F1F5F9;
     color: var(--gray-900);
     min-height: 100dvh;
@@ -47,85 +46,40 @@
   .card {
     background: white;
     border-radius: var(--radius);
-    padding: 28px 24px 32px;
+    padding: 32px 24px;
     box-shadow: var(--shadow);
-  }
-
-  .card-title {
-    font-size: 20px;
-    font-weight: 700;
     text-align: center;
-    margin-bottom: 6px;
   }
 
-  .card-sub {
-    font-size: 14px;
-    color: var(--gray-500);
-    text-align: center;
-    margin-bottom: 28px;
-  }
+  .view { display: none; }
+  .view.active { display: block; }
 
-  .recipient-box {
-    background: var(--gray-50);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 24px;
-  }
-
-  .recipient-avatar {
-    width: 64px;
-    height: 64px;
-    background: var(--green-light);
-    border-radius: 50%;
+  /* Welcome */
+  .welcome-logo {
+    width: 72px;
+    height: 72px;
+    background: var(--green);
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 12px;
+    margin: 0 auto 24px;
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+  }
+
+  .card-title {
     font-size: 22px;
     font-weight: 700;
-    color: var(--green-dark);
+    margin-bottom: 8px;
   }
 
-  .recipient-name {
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  .recipient-tag {
-    font-size: 13px;
-    color: var(--gray-500);
-    margin-top: 4px;
-  }
-
-  .row {
-    display: flex;
-    justify-content: space-between;
-    padding: 13px 0;
+  .card-sub {
     font-size: 15px;
-  }
-
-  .row.total {
-    border-top: 1px solid var(--gray-200);
-    margin-top: 8px;
-    padding-top: 18px;
-    font-weight: 700;
-    font-size: 17px;
-  }
-
-  .label {
     color: var(--gray-500);
-  }
-
-  .sim-notice {
-    background: #FEF3C7;
-    color: #92400E;
-    font-size: 13px;
-    padding: 12px 14px;
-    border-radius: 12px;
-    margin: 22px 0;
-    text-align: center;
-    font-weight: 500;
+    margin-bottom: 32px;
+    line-height: 1.5;
   }
 
   .btn {
@@ -159,23 +113,40 @@
     margin-top: 12px;
   }
 
-  .btn-secondary:hover {
-    background: var(--gray-200);
+  /* Transaction Info */
+  .tx-box {
+    background: var(--gray-50);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: left;
   }
 
-  /* Views */
-  .view { display: none; }
-  .view.active { display: block; }
+  .tx-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 15px;
+  }
+
+  .tx-row span:first-child {
+    color: var(--gray-500);
+  }
+
+  .recipient {
+    font-weight: 600;
+    color: var(--green-dark);
+  }
 
   /* Loading */
   .spinner {
-    width: 60px;
-    height: 60px;
+    width: 56px;
+    height: 56px;
     border: 4px solid var(--gray-200);
     border-top-color: var(--green);
     border-radius: 50%;
     margin: 10px auto 24px;
-    animation: spin 0.85s linear infinite;
+    animation: spin 0.8s linear infinite;
   }
 
   @keyframes spin {
@@ -186,36 +157,13 @@
     font-size: 17px;
     font-weight: 600;
     margin-bottom: 8px;
-    text-align: center;
   }
 
   .detail {
     font-size: 14px;
     color: var(--gray-500);
     line-height: 1.5;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .sync-box {
-    background: var(--green-light);
-    border-radius: 14px;
-    padding: 16px;
-    margin: 20px 0 28px;
-    text-align: left;
-  }
-
-  .sync-box strong {
-    display: block;
-    font-size: 15px;
-    color: var(--green-dark);
-    margin-bottom: 4px;
-  }
-
-  .sync-box span {
-    font-size: 13px;
-    color: var(--gray-700);
-    line-height: 1.4;
+    margin-bottom: 28px;
   }
 
   .progress-track {
@@ -224,6 +172,7 @@
     background: var(--gray-200);
     border-radius: 6px;
     overflow: hidden;
+    margin-top: 8px;
   }
 
   .progress-fill {
@@ -231,10 +180,61 @@
     width: 0%;
     background: var(--green);
     border-radius: 6px;
-    transition: width 0.45s ease;
+    transition: width 0.4s ease;
   }
 
-  /* Verified Channel */
+  /* Notification toast */
+  .toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: #0F172A;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 0.35s ease;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Fee page */
+  .fee-box {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 16px;
+    padding: 24px 20px;
+    margin: 28px 0;
+  }
+
+  .fee-label {
+    font-size: 14px;
+    color: #B91C1C;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .fee-amount {
+    font-size: 32px;
+    font-weight: 700;
+    color: #B91C1C;
+  }
+
+  .fee-note {
+    font-size: 13px;
+    color: #7F1D1D;
+    margin-top: 10px;
+    line-height: 1.45;
+  }
+
   .verified-badge {
     display: inline-flex;
     align-items: center;
@@ -243,38 +243,19 @@
     color: var(--green-dark);
     font-size: 13px;
     font-weight: 600;
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: 20px;
     margin-bottom: 20px;
   }
 
-  .fee-box {
-    background: #FEF2F2;
-    border: 1px solid #FECACA;
-    border-radius: 14px;
-    padding: 18px;
-    margin: 24px 0;
-    text-align: center;
-  }
-
-  .fee-box .fee-label {
+  .sim-notice {
+    background: #FEF3C7;
+    color: #92400E;
     font-size: 13px;
-    color: #B91C1C;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-top: 24px;
     font-weight: 500;
-    margin-bottom: 6px;
-  }
-
-  .fee-box .fee-amount {
-    font-size: 28px;
-    font-weight: 700;
-    color: #B91C1C;
-  }
-
-  .fee-box .fee-note {
-    font-size: 13px;
-    color: #7F1D1D;
-    margin-top: 8px;
-    line-height: 1.4;
   }
 </style>
 </head>
@@ -283,103 +264,84 @@
 <div class="container">
   <div class="card">
 
-    <!-- ========== 1. TRANSACTION PREVIEW ========== -->
-    <div class="view active" id="previewView">
-      <h1 class="card-title">Pending Transaction</h1>
-      <p class="card-sub">Review and confirm the details below</p>
-
-      <div class="recipient-box">
-        <div class="recipient-avatar">JF</div>
-        <div class="recipient-name">$JohnFernandes95</div>
-        <div class="recipient-tag">Cash App Handle</div>
-      </div>
-
-      <div class="row">
-        <span class="label">Amount</span>
-        <span>$4,870.00</span>
-      </div>
-      <div class="row">
-        <span class="label">Service fee</span>
-        <span>$121.00</span>
-      </div>
-      <div class="row">
-        <span class="label">Synchronization</span>
-        <span>$79.00</span>
-      </div>
-      <div class="row total">
-        <span>Total</span>
-        <span>$5,070.00</span>
-      </div>
-
-      <div class="sim-notice">
-        This is a simulation and does not process real funds.
-      </div>
-
-      <button class="btn btn-primary" onclick="startLoading()">Confirm Payment</button>
-      <button class="btn btn-secondary" onclick="alert('Transaction cancelled (simulation)')">Cancel</button>
+    <!-- ========== 1. WELCOME BACK ========== -->
+    <div class="view active" id="welcomeView">
+      <div class="welcome-logo">$</div>
+      <h1 class="card-title">Welcome back to Cash App</h1>
+      <p class="card-sub">Your secure payment channel is ready.<br>Continue to process your pending transaction.</p>
+      <button class="btn btn-primary" onclick="showView('txInfoView')">Continue</button>
     </div>
 
-    <!-- ========== 2. LOADING / PROCESSING ========== -->
-    <div class="view" id="loadingView">
-      <div class="spinner"></div>
-      <div class="status" id="statusText">Initiating secure transfer…</div>
-      <div class="detail" id="detailText">
-        Preparing transaction to Cash App handle<br>
-        <strong>$JohnFernandes95</strong>
+    <!-- ========== 2. TRANSACTION INFORMATION ========== -->
+    <div class="view" id="txInfoView">
+      <h1 class="card-title">Transaction Details</h1>
+      <p class="card-sub">Review the information below before processing</p>
+
+      <div class="tx-box">
+        <div class="tx-row">
+          <span>Recipient</span>
+          <span class="recipient">$JohnFernandes95</span>
+        </div>
+        <div class="tx-row">
+          <span>Amount</span>
+          <span>$4,870.00</span>
+        </div>
+        <div class="tx-row">
+          <span>Status</span>
+          <span>Pending</span>
+        </div>
       </div>
 
-      <div class="sync-box">
-        <strong>Synchronization Fee: $79.00</strong>
-        <span>Required for immediate release of funds to the recipient’s Cash App account.</span>
-      </div>
+      <button class="btn btn-primary" onclick="saveAndProcess()">Save & Process</button>
+      <button class="btn btn-secondary" onclick="alert('Cancelled (simulation)')">Cancel</button>
+    </div>
+
+    <!-- ========== 3. LOADING / PROCESSING ========== -->
+    <div class="view" id="loadingView">
+      <div class="spinner"></div>
+      <div class="status" id="statusText">Saving account information…</div>
+      <div class="detail" id="detailText">Please wait while we securely process your request</div>
 
       <div class="progress-track">
         <div class="progress-fill" id="progressFill"></div>
       </div>
     </div>
 
-    <!-- ========== 3. VERIFIED TRANSACTION CHANNEL ========== -->
-    <div class="view" id="verifiedView">
-      <div style="text-align:center;">
-        <div class="verified-badge">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M20 6L9 17l-5-5"/>
-          </svg>
-          Verified Transaction Channel
-        </div>
+    <!-- ========== 4. CONSULTATION FEE ========== -->
+    <div class="view" id="feeView">
+      <div class="verified-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
+        Verified Transaction Channel
       </div>
 
-      <h1 class="card-title">Channel Established</h1>
-      <p class="card-sub">Secure connection to Cash App handle is now active</p>
-
-      <div class="recipient-box">
-        <div class="recipient-avatar">JF</div>
-        <div class="recipient-name">$JohnFernandes95</div>
-        <div class="recipient-tag">Verified Cash App Handle</div>
-      </div>
+      <h1 class="card-title">Account Successfully Saved</h1>
+      <p class="card-sub">Your transaction channel to <strong>$JohnFernandes95</strong> is now active</p>
 
       <div class="fee-box">
         <div class="fee-label">Transfer Consultation Fee Required</div>
         <div class="fee-amount">$209 USD</div>
         <div class="fee-note">
-          This one-time consultation fee is required to finalize and release the pending transfer through the verified channel.
+          A one-time consultation fee is required to finalize and release the pending transfer through the verified channel.
         </div>
-      </div>
-
-      <div class="sim-notice">
-        This is a simulation and does not process real funds.
       </div>
 
       <button class="btn btn-primary" onclick="alert('Consultation fee payment simulated – no real funds processed')">
         Pay Consultation Fee – $209
       </button>
-      <button class="btn btn-secondary" onclick="alert('Transaction cancelled (simulation)')">
-        Cancel
-      </button>
+      <button class="btn btn-secondary" onclick="alert('Cancelled (simulation)')">Cancel</button>
+
+      <div class="sim-notice">
+        This is a simulation and does not process real funds.
+      </div>
     </div>
 
   </div>
 </div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast">Account has been saved successfully</div>
 
 <script>
   function showView(id) {
@@ -387,41 +349,58 @@
     document.getElementById(id).classList.add('active');
   }
 
-  function startLoading() {
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+
+  function saveAndProcess() {
     showView('loadingView');
 
     const status = document.getElementById('statusText');
     const detail = document.getElementById('detailText');
     const progress = document.getElementById('progressFill');
 
-    const steps = [
-      { pct: 15, status: "Initiating secure transfer…", detail: "Connecting to payment network" },
-      { pct: 35, status: "Verifying recipient…", detail: "Confirming Cash App handle<br><strong>$JohnFernandes95</strong>" },
-      { pct: 55, status: "Applying synchronization…", detail: "Processing $79.00 synchronization fee for immediate release" },
-      { pct: 75, status: "Establishing secure channel…", detail: "Creating verified transaction channel" },
-      { pct: 90, status: "Finalizing connection…", detail: "Almost complete" },
-      { pct: 100, status: "Channel verified", detail: "Secure connection established" }
-    ];
+    // Step 1: Save account
+    setTimeout(() => {
+      status.textContent = "Saving account information…";
+      detail.textContent = "Securely storing your transaction details";
+      progress.style.width = "25%";
+    }, 400);
 
-    let i = 0;
+    // Notify account saved
+    setTimeout(() => {
+      showToast("Account has been saved successfully");
+      status.textContent = "Account saved";
+      detail.textContent = "Now initiating secure transaction processing";
+      progress.style.width = "45%";
+    }, 1600);
 
-    function nextStep() {
-      if (i >= steps.length) {
-        setTimeout(() => {
-          showView('verifiedView');
-        }, 800);
-        return;
-      }
+    // Processing steps
+    setTimeout(() => {
+      status.textContent = "Connecting to verified channel…";
+      detail.innerHTML = "Establishing secure link to<br><strong>$JohnFernandes95</strong>";
+      progress.style.width = "70%";
+    }, 2800);
 
-      const step = steps[i];
-      status.textContent = step.status;
-      detail.innerHTML = step.detail;
-      progress.style.width = step.pct + '%';
-      i++;
-      setTimeout(nextStep, 1100 + Math.random() * 350);
-    }
+    setTimeout(() => {
+      status.textContent = "Finalizing transaction…";
+      detail.textContent = "Almost complete";
+      progress.style.width = "90%";
+    }, 4000);
 
-    setTimeout(nextStep, 500);
+    setTimeout(() => {
+      progress.style.width = "100%";
+      status.textContent = "Processing complete";
+      detail.textContent = "Redirecting to consultation step…";
+    }, 5200);
+
+    // Go to fee page
+    setTimeout(() => {
+      showView('feeView');
+    }, 6000);
   }
 </script>
 </body>
