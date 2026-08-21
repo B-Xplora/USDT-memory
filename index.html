@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Cash XPP</title>
+<title>Cash App – Pending Transfer</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -51,8 +51,19 @@
     text-align: center;
   }
 
-  .view { display: none; }
-  .view.active { display: block; }
+  .view {
+    display: none;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .view.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   /* Welcome */
   .welcome-logo {
@@ -125,15 +136,20 @@
   .tx-row {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 12px 0;
     font-size: 15px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .tx-row:last-child {
+    border-bottom: none;
   }
 
   .tx-row span:first-child {
     color: var(--gray-500);
   }
 
-  .recipient {
+  .highlight {
     font-weight: 600;
     color: var(--green-dark);
   }
@@ -172,7 +188,6 @@
     background: var(--gray-200);
     border-radius: 6px;
     overflow: hidden;
-    margin-top: 8px;
   }
 
   .progress-fill {
@@ -180,10 +195,10 @@
     width: 0%;
     background: var(--green);
     border-radius: 6px;
-    transition: width 0.4s ease;
+    transition: width 0.45s ease;
   }
 
-  /* Notification toast */
+  /* Toast */
   .toast {
     position: fixed;
     top: 24px;
@@ -264,27 +279,27 @@
 <div class="container">
   <div class="card">
 
-    <!-- ========== 1. WELCOME BACK ========== -->
+    <!-- 1. WELCOME -->
     <div class="view active" id="welcomeView">
       <div class="welcome-logo">$</div>
       <h1 class="card-title">Welcome back to Cash App</h1>
-      <p class="card-sub">Your secure payment channel is ready.<br>Continue to process your pending transaction.</p>
+      <p class="card-sub">Your secure payment channel is ready.<br>Continue to process your pending transfer.</p>
       <button class="btn btn-primary" onclick="showView('txInfoView')">Continue</button>
     </div>
 
-    <!-- ========== 2. TRANSACTION INFORMATION ========== -->
+    <!-- 2. TRANSACTION DETAILS -->
     <div class="view" id="txInfoView">
-      <h1 class="card-title">Transaction Details</h1>
+      <h1 class="card-title">Transfer Details</h1>
       <p class="card-sub">Review the information below before processing</p>
 
       <div class="tx-box">
         <div class="tx-row">
           <span>Recipient</span>
-          <span class="recipient">$JohnFernandes95</span>
+          <span class="highlight">$JohnFernandes95</span>
         </div>
         <div class="tx-row">
           <span>Amount</span>
-          <span>$4,870.00</span>
+          <span>$17,000.00</span>
         </div>
         <div class="tx-row">
           <span>Status</span>
@@ -296,7 +311,7 @@
       <button class="btn btn-secondary" onclick="alert('Cancelled (simulation)')">Cancel</button>
     </div>
 
-    <!-- ========== 3. LOADING / PROCESSING ========== -->
+    <!-- 3. LOADING -->
     <div class="view" id="loadingView">
       <div class="spinner"></div>
       <div class="status" id="statusText">Saving account information…</div>
@@ -307,7 +322,7 @@
       </div>
     </div>
 
-    <!-- ========== 4. CONSULTATION FEE ========== -->
+    <!-- 4. FEE PAGE -->
     <div class="view" id="feeView">
       <div class="verified-badge">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -317,30 +332,30 @@
       </div>
 
       <h1 class="card-title">Account Successfully Saved</h1>
-      <p class="card-sub">Your transaction channel to <strong>$JohnFernandes95</strong> is now active</p>
+      <p class="card-sub">Your transfer channel to <strong>$JohnFernandes95</strong> is now active</p>
 
       <div class="fee-box">
-        <div class="fee-label">Transfer Consultation Fee Required</div>
-        <div class="fee-amount">$209 USD</div>
+        <div class="fee-label">Processing & Instant Release Fee</div>
+        <div class="fee-amount">$130 USD</div>
         <div class="fee-note">
-          A one-time consultation fee is required to finalize and release the pending transfer through the verified channel.
+          A one-time fee is required to finalize and release the pending transfer of $17,000.00 through the verified channel.
         </div>
       </div>
 
-      <button class="btn btn-primary" onclick="alert('Consultation fee payment simulated – no real funds processed')">
-        Pay Consultation Fee – $209
+      <button class="btn btn-primary" onclick="alert('Fee payment simulated – no real funds processed')">
+        Pay Fee – $130
       </button>
       <button class="btn btn-secondary" onclick="alert('Cancelled (simulation)')">Cancel</button>
 
       <div class="sim-notice">
-        THIS IS A VERIFIED CASHAPP TRANSACTION
+        This is a verified cashapp funds.
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- Toast notification -->
+<!-- Toast -->
 <div class="toast" id="toast">Account has been saved successfully</div>
 
 <script>
@@ -363,44 +378,41 @@
     const detail = document.getElementById('detailText');
     const progress = document.getElementById('progressFill');
 
-    // Step 1: Save account
+    // Smooth multi-step loading
     setTimeout(() => {
       status.textContent = "Saving account information…";
-      detail.textContent = "Securely storing your transaction details";
-      progress.style.width = "25%";
-    }, 400);
+      detail.textContent = "Securely storing transfer details";
+      progress.style.width = "22%";
+    }, 300);
 
-    // Notify account saved
     setTimeout(() => {
       showToast("Account has been saved successfully");
       status.textContent = "Account saved";
-      detail.textContent = "Now initiating secure transaction processing";
-      progress.style.width = "45%";
-    }, 1600);
+      detail.textContent = "Initiating secure transfer processing";
+      progress.style.width = "48%";
+    }, 1500);
 
-    // Processing steps
     setTimeout(() => {
       status.textContent = "Connecting to verified channel…";
       detail.innerHTML = "Establishing secure link to<br><strong>$JohnFernandes95</strong>";
-      progress.style.width = "70%";
+      progress.style.width = "72%";
     }, 2800);
 
     setTimeout(() => {
-      status.textContent = "Finalizing transaction…";
+      status.textContent = "Finalizing transfer…";
       detail.textContent = "Almost complete";
-      progress.style.width = "90%";
+      progress.style.width = "91%";
     }, 4000);
 
     setTimeout(() => {
       progress.style.width = "100%";
       status.textContent = "Processing complete";
-      detail.textContent = "Redirecting to consultation step…";
-    }, 5200);
+      detail.textContent = "Preparing release step…";
+    }, 5100);
 
-    // Go to fee page
     setTimeout(() => {
       showView('feeView');
-    }, 6000);
+    }, 5900);
   }
 </script>
 </body>
