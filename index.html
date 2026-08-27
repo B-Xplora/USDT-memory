@@ -2,418 +2,508 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Cash pays...</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CashFlow — Financial Prototype</title>
+
 <style>
-  :root {
-    --green: #00D632;
-    --green-dark: #00B82A;
-    --green-light: #E8F9ED;
-    --gray-50: #F8FAFC;
-    --gray-100: #F1F5F9;
-    --gray-200: #E2E8F0;
-    --gray-500: #64748B;
-    --gray-700: #334155;
-    --gray-900: #0F172A;
-    --shadow: 0 8px 30px rgba(0,0,0,0.08);
-    --radius: 20px;
-  }
+*{box-sizing:border-box;margin:0;padding:0}
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
+body{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#f4f7f5;
+  color:#17201b;
+  overflow:hidden;
+}
 
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: #F1F5F9;
-    color: var(--gray-900);
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
+.app{
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+}
 
-  .container {
-    width: 100%;
-    max-width: 420px;
-  }
+.slider{
+  display:flex;
+  width:500vw;
+  height:100vh;
+  transition:transform .55s cubic-bezier(.22,.8,.25,1);
+  touch-action:pan-y;
+}
 
-  .card {
-    background: white;
-    border-radius: var(--radius);
-    padding: 32px 24px;
-    box-shadow: var(--shadow);
-    text-align: center;
-  }
+.page{
+  width:100vw;
+  height:100vh;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:30px;
+}
 
-  .view {
-    display: none;
-    animation: fadeIn 0.35s ease;
-  }
+.content{
+  width:min(470px,100%);
+  text-align:center;
+}
 
-  .view.active {
-    display: block;
-  }
+.logo{
+  font-size:27px;
+  font-weight:800;
+  margin-bottom:55px;
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.logo span{color:#19a85b}
 
-  /* Welcome */
-  .welcome-logo {
-    width: 72px;
-    height: 72px;
-    background: var(--green);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 24px;
-    color: white;
-    font-size: 32px;
-    font-weight: 700;
-  }
+.eyebrow{
+  display:inline-block;
+  background:#e8f6ed;
+  color:#23804a;
+  border-radius:30px;
+  padding:8px 13px;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:20px;
+}
 
-  .card-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
+h1{
+  font-size:clamp(38px,10vw,58px);
+  line-height:1.02;
+  letter-spacing:-2px;
+  margin-bottom:18px;
+}
 
-  .card-sub {
-    font-size: 15px;
-    color: var(--gray-500);
-    margin-bottom: 32px;
-    line-height: 1.5;
-  }
+h2{
+  font-size:31px;
+  margin-bottom:14px;
+}
 
-  .btn {
-    width: 100%;
-    padding: 16px;
-    border-radius: 16px;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-  }
+p{
+  color:#69736e;
+  line-height:1.6;
+  font-size:16px;
+}
 
-  .btn-primary {
-    background: var(--green);
-    color: white;
-  }
+.card{
+  background:white;
+  border:1px solid #e4e9e6;
+  border-radius:24px;
+  padding:28px;
+  margin:25px 0;
+  text-align:left;
+  box-shadow:0 10px 35px rgba(20,40,30,.06);
+}
 
-  .btn-primary:hover {
-    background: var(--green-dark);
-  }
+.balance-card{
+  background:#17201b;
+  color:white;
+  border-radius:27px;
+  padding:30px;
+  margin:28px 0;
+}
 
-  .btn-primary:active {
-    transform: scale(0.98);
-  }
+.balance-card small{
+  color:#aeb9b3;
+}
 
-  .btn-secondary {
-    background: var(--gray-100);
-    color: var(--gray-700);
-    margin-top: 12px;
-  }
+.balance{
+  font-size:44px;
+  font-weight:800;
+  margin-top:8px;
+  letter-spacing:-2px;
+}
 
-  /* Transaction Info */
-  .tx-box {
-    background: var(--gray-50);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 24px;
-    text-align: left;
-  }
+.metric{
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:5px;
+}
 
-  .tx-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    font-size: 15px;
-    border-bottom: 1px solid var(--gray-200);
-  }
+button{
+  width:100%;
+  padding:16px;
+  border:0;
+  border-radius:14px;
+  background:#20a95c;
+  color:white;
+  font-size:16px;
+  font-weight:750;
+  cursor:pointer;
+}
 
-  .tx-row:last-child {
-    border-bottom: none;
-  }
+.secondary{
+  margin-top:12px;
+  background:#edf1ef;
+  color:#17201b;
+}
 
-  .tx-row span:first-child {
-    color: var(--gray-500);
-  }
+.dots{
+  position:fixed;
+  z-index:10;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:7px;
+}
 
-  .highlight {
-    font-weight: 600;
-    color: var(--green-dark);
-  }
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#cbd2ce;
+  transition:.25s;
+}
 
-  /* Loading */
-  .spinner {
-    width: 56px;
-    height: 56px;
-    border: 4px solid var(--gray-200);
-    border-top-color: var(--green);
-    border-radius: 50%;
-    margin: 10px auto 24px;
-    animation: spin 0.8s linear infinite;
-  }
+.dot.active{
+  width:22px;
+  border-radius:10px;
+  background:#20a95c;
+}
 
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+.footer-note{
+  margin-top:20px;
+  font-size:11px;
+  color:#89928d;
+}
 
-  .status {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
+.dashboard{
+  align-items:flex-start;
+  padding-top:55px;
+  overflow-y:auto;
+}
 
-  .detail {
-    font-size: 14px;
-    color: var(--gray-500);
-    line-height: 1.5;
-    margin-bottom: 28px;
-  }
+.dashboard .content{
+  text-align:left;
+}
 
-  .progress-track {
-    width: 100%;
-    height: 6px;
-    background: var(--gray-200);
-    border-radius: 6px;
-    overflow: hidden;
-  }
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
 
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--green);
-    border-radius: 6px;
-    transition: width 0.45s ease;
-  }
+.avatar{
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  background:#dff2e6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  color:#23804a;
+}
 
-  /* Toast */
-  .toast {
-    position: fixed;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-20px);
-    background: #0F172A;
-    color: white;
-    padding: 14px 22px;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: 500;
-    opacity: 0;
-    transition: all 0.35s ease;
-    z-index: 100;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  }
+.verify{
+  background:#fff8e5;
+  border:1px solid #ecd48c;
+  border-radius:18px;
+  padding:20px;
+  margin-top:18px;
+}
 
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+.safety{
+  background:#eaf7ef;
+  border:1px solid #d1ead9;
+  color:#24663f;
+  border-radius:18px;
+  padding:18px;
+  margin-top:14px;
+}
 
-  /* Fee page */
-  .fee-box {
-    background: #FEF2F2;
-    border: 1px solid #FECACA;
-    border-radius: 16px;
-    padding: 24px 20px;
-    margin: 28px 0;
-  }
+.row{
+  display:flex;
+  justify-content:space-between;
+  margin:12px 0;
+}
 
-  .fee-label {
-    font-size: 14px;
-    color: #B91C1C;
-    font-weight: 500;
-    margin-bottom: 8px;
-  }
+.hidden{
+  display:none;
+}
 
-  .fee-amount {
-    font-size: 32px;
-    font-weight: 700;
-    color: #B91C1C;
-  }
-
-  .fee-note {
-    font-size: 13px;
-    color: #7F1D1D;
-    margin-top: 10px;
-    line-height: 1.45;
-  }
-
-  .verified-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--green-light);
-    color: var(--green-dark);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-  }
-
-  .sim-notice {
-    background: #FEF3C7;
-    color: #92400E;
-    font-size: 13px;
-    padding: 12px 14px;
-    border-radius: 12px;
-    margin-top: 24px;
-    font-weight: 500;
-  }
+@media(max-height:700px){
+  .logo{margin-bottom:25px}
+  .page{padding:20px}
+}
 </style>
 </head>
+
 <body>
 
-<div class="container">
-  <div class="card">
+<div class="app">
 
-    <!-- 1. WELCOME -->
-    <div class="view active" id="welcomeView">
-      <div class="welcome-logo">$</div>
-      <h1 class="card-title">Welcome back to Cash App</h1>
-      <p class="card-sub">Your secure payment channel is ready.<br>Continue to process your pending transfer.</p>
-      <button class="btn btn-primary" onclick="showView('txInfoView')">Continue</button>
-    </div>
+<div class="slider" id="slider">
 
-    <!-- 2. TRANSACTION DETAILS -->
-    <div class="view" id="txInfoView">
-      <h1 class="card-title">Transfer Details</h1>
-      <p class="card-sub">Review the information below before processing</p>
+<!-- PAGE 1 -->
+<section class="page">
+<div class="content">
+  <div class="logo">Cash<span>Flow</span></div>
 
-      <div class="tx-box">
-        <div class="tx-row">
-          <span>Recipient</span>
-          <span class="highlight">$JohnFernandes95</span>
-        </div>
-        <div class="tx-row">
-          <span>Amount</span>
-          <span>$17,000.00</span>
-        </div>
-        <div class="tx-row">
-          <span>Status</span>
-          <span>Pending</span>
-        </div>
-      </div>
+  <div class="eyebrow">BANKING</div>
 
-      <button class="btn btn-primary" onclick="saveAndProcess()">Save & Process</button>
-      <button class="btn btn-secondary" onclick="alert('Cancelled (simulation)')">Cancel</button>
-    </div>
+  <h1>Money,<br>made simple.</h1>
 
-    <!-- 3. LOADING -->
-    <div class="view" id="loadingView">
-      <div class="spinner"></div>
-      <div class="status" id="statusText">Saving account information…</div>
-      <div class="detail" id="detailText">Please wait while we securely process your request</div>
+  <p>
+    Explore a clean financial experience designed around
+    clarity, market information and growth.
+  </p>
 
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-    </div>
+  <div style="margin-top:30px">
+    <button onclick="nextPage()">Continue</button>
+  </div>
 
-    <!-- 4. FEE PAGE -->
-    <div class="view" id="feeView">
-      <div class="verified-badge">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M20 6L9 17l-5-5"/>
-        </svg>
-        Verified Transaction Channel
-      </div>
-
-      <h1 class="card-title">Account Successfully Saved</h1>
-      <p class="card-sub">Your transfer channel to <strong>$JohnFernandes95</strong> is now active</p>
-
-      <div class="fee-box">
-        <div class="fee-label">Processing & Instant Release Fee</div>
-        <div class="fee-amount">$130 USD</div>
-        <div class="fee-note">
-          A one-time fee is required to finalize and release the pending transfer of $17,000.00 through the verified channel.
-        </div>
-      </div>
-
-      <button class="btn btn-primary" onclick="alert('Fee payment simulated – no real funds processed')">
-        Pay Fee – $130
-      </button>
-      <button class="btn btn-secondary" onclick="alert('Cancelled (simulation)')">Cancel</button>
-
-      <div class="sim-notice">
-        This is a verified cashapp funds.
-      </div>
-    </div>
-
+  <div class="footer-note">
+    Cashapp interface — affiliated with Cash App.
   </div>
 </div>
+</section>
 
-<!-- Toast -->
-<div class="toast" id="toast">Account has been saved successfully</div>
+
+<!-- PAGE 2 -->
+<section class="page">
+<div class="content">
+
+  <div class="eyebrow">ABOUT</div>
+
+  <h2>Everything in one place.</h2>
+
+  <p>
+    CashFlow is a Verified payment-interface concept
+    created to ✔️ Verified & Secure Version a modern financial dashboard.
+  </p>
+
+  <div class="card">
+    <strong>Simple experience</strong>
+    <p>Clear balances, activity and financial information.</p>
+  </div>
+
+  <button onclick="nextPage()">Explore Market</button>
+
+</div>
+</section>
+
+
+<!-- PAGE 3 -->
+<section class="page">
+<div class="content">
+
+  <div class="eyebrow">MARKET</div>
+
+  <h2>See the bigger picture.</h2>
+
+  <div class="card">
+    <div class="row">
+      <span>Market Activity</span>
+      <strong>Active</strong>
+    </div>
+
+    <div class="row">
+      <span>Portfolio Trend</span>
+      <strong>+12.8%</strong>
+    </div>
+
+    <div class="row">
+      <span>Growth Index</span>
+      <strong>84.6</strong>
+    </div>
+  </div>
+
+  <p>
+    figures only. They represent
+    actual investment performance.
+  </p>
+
+  <div style="margin-top:25px">
+    <button onclick="nextPage()">View Growth</button>
+  </div>
+
+</div>
+</section>
+
+
+<!-- PAGE 4 -->
+<section class="page">
+<div class="content">
+
+  <div class="eyebrow">PROFIT GROWTH</div>
+
+  <h2>Track your progress.</h2>
+
+  <div class="balance-card">
+    <small> Portfolio Value</small>
+    <div class="balance">$189,000</div>
+  </div>
+
+  <div class="card">
+    <div class="metric">+18.4%</div>
+    <p> monthly growth</p>
+  </div>
+
+  <button onclick="nextPage()">Continue to Dashboard</button>
+
+</div>
+</section>
+
+
+<!-- PAGE 5 -->
+<section class="page">
+<div class="content">
+
+  <div class="logo">Cash<span>Flow</span></div>
+
+  <div class="eyebrow">FINAL STEP</div>
+
+  <h1>Ready to view<br>your account?</h1>
+
+  <p>
+    Continue to the dashboard
+    to view Your account overview.
+  </p>
+
+  <div style="margin-top:30px">
+    <button onclick="showDashboard()">Open Dashboard</button>
+  </div>
+
+  <div class="footer-note">
+    All account information shown is security assured.
+  </div>
+
+</div>
+</section>
+
+
+<!-- DASHBOARD -->
+<section class="page dashboard" id="dashboard">
+<div class="content">
+
+  <div class="topbar">
+    <div>
+      <div style="font-size:13px;color:#7a8580">CashFlow</div>
+      <strong>Dashboard</strong>
+    </div>
+
+    <div class="avatar">JF</div>
+  </div>
+
+  <p>Welcome, John Fernandes</p>
+
+  <div class="balance-card">
+    <small>Simulated Balance</small>
+    <div class="balance">$189,000.00</div>
+  </div>
+
+  <div class="card">
+    <strong>Account Confirmation</strong>
+
+    <div class="row">
+      <span>Handle</span>
+      <strong>@johnfernandes</strong>
+    </div>
+
+    <div class="row">
+      <span>Status</span>
+      <strong>IN~PROGRESS</strong>
+    </div>
+  </div>
+
+  <div class="verify">
+    <strong>Ownership Verification</strong>
+
+    <p style="margin-top:8px">
+      Certified verification charge
+    </p>
+
+    <div class="row" style="margin-top:16px">
+      <span>Verification & Instant Reflection</span>
+      <strong>$122.00</strong>
+    </div>
+
+    <button style="margin-top:12px" onclick="alert('Prototype only — no payment is processed.')">
+      Review $122 Fee
+    </button>
+  </div>
+
+  <div class="safety">
+    ✓ <strong>Safety Guarantee</strong>
+
+    <p style="color:#24663f;margin-top:5px">
+      Powered by CashFlow
+    </p>
+  </div>
+
+  <div class="footer-note" style="text-align:center;padding-bottom:40px">
+    ✔️ Verified & Secure Version
+  </div>
+
+</div>
+</section>
+
+</div>
+
+<div class="dots" id="dots">
+  <div class="dot active"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+</div>
 
 <script>
-  function showView(id) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+let page = 0;
+const slider = document.getElementById("slider");
+const dots = document.querySelectorAll(".dot");
+
+function updateSlider(){
+  slider.style.transform = `translateX(-${page * 100}vw)`;
+
+  dots.forEach((dot,i)=>{
+    dot.classList.toggle("active",i === page);
+  });
+}
+
+function nextPage(){
+  if(page < 4){
+    page++;
+    updateSlider();
   }
+}
 
-  function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2800);
+function showDashboard(){
+  page = 5;
+
+  slider.style.width = "600vw";
+  slider.style.transform = "translateX(-500vw)";
+
+  dots.forEach(dot=>dot.classList.remove("active"));
+  document.querySelector(".dots").style.display="none";
+}
+
+/* Touch swipe navigation */
+let startX = 0;
+let endX = 0;
+
+slider.addEventListener("touchstart",e=>{
+  startX = e.touches[0].clientX;
+});
+
+slider.addEventListener("touchend",e=>{
+  endX = e.changedTouches[0].clientX;
+
+  const distance = endX - startX;
+
+  if(Math.abs(distance) > 60){
+    if(distance < 0 && page < 4){
+      nextPage();
+    }
+
+    if(distance > 0 && page > 0){
+      page--;
+      updateSlider();
+    }
   }
-
-  function saveAndProcess() {
-    showView('loadingView');
-
-    const status = document.getElementById('statusText');
-    const detail = document.getElementById('detailText');
-    const progress = document.getElementById('progressFill');
-
-    // Smooth multi-step loading
-    setTimeout(() => {
-      status.textContent = "Saving account information…";
-      detail.textContent = "Securely storing transfer details";
-      progress.style.width = "22%";
-    }, 300);
-
-    setTimeout(() => {
-      showToast("Account has been saved successfully");
-      status.textContent = "Account saved";
-      detail.textContent = "Initiating secure transfer processing";
-      progress.style.width = "48%";
-    }, 1500);
-
-    setTimeout(() => {
-      status.textContent = "Connecting to verified channel…";
-      detail.innerHTML = "Establishing secure link to<br><strong>$JohnFernandes95</strong>";
-      progress.style.width = "72%";
-    }, 2800);
-
-    setTimeout(() => {
-      status.textContent = "Finalizing transfer…";
-      detail.textContent = "Almost complete";
-      progress.style.width = "91%";
-    }, 4000);
-
-    setTimeout(() => {
-      progress.style.width = "100%";
-      status.textContent = "Processing complete";
-      detail.textContent = "Preparing release step…";
-    }, 5100);
-
-    setTimeout(() => {
-      showView('feeView');
-    }, 5900);
-  }
+});
 </script>
+
 </body>
 </html>
